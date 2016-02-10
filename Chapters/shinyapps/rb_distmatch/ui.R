@@ -4,6 +4,7 @@ shinyUI(fluidPage(
   sidebarLayout(position = "right",
     sidebarPanel( 
       h1("Control Panel"), 
+      selectInput("mincarries",label=h4("Minimum Carries for Inclusion"), choices=c("50","100","150","200")),
       uiOutput("playerControls"),
       checkboxInput("sortplayers",label=h5("Sort by Career Carries"),TRUE),
       uiOutput("player2Controls")
