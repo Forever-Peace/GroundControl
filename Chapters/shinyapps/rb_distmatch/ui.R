@@ -11,7 +11,7 @@ shinyUI(fluidPage(
     ),
     mainPanel(
       plotOutput("cumcarries"),
-      h4("Only players with 50+ carries since 2010 are included."),
+      h4("Only carries since 2010 are included."),
       textOutput("textcarries1"),
       textOutput("textcarries2"),
       h5("Top 10 Matches:"),
