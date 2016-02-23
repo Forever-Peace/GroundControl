@@ -8,14 +8,17 @@ shinyUI(fluidPage(
       uiOutput("playerControls1"), 
       uiOutput("playerControls2"),
       checkboxInput("sortplayers",label=h5("Sort by Career Carries"),TRUE),
-      actionButton("recalc","Run Simulation")
+      actionButton("recalc","Run Simulation"),
+      conditionalPanel("$('#carrieskde').hasClass('recalculating')", 
+                       tags$div('Loading ... ')
+      )
     ),
     mainPanel(
       tabsetPanel(
         tabPanel("Run Distributions", plotOutput("carrieskde")),
-        tabPanel("Results", htmlOutput("resultstext"))
+        tabPanel("Results", htmlOutput("resultstext"),tableOutput("fivenumtable"))
       ),
-      h5("Select two players and a sample size for a head to head competition. The simulator find who went further with their carries (expressed in yards per carry). These competitions are simulated 10,000 times to estimate win probability for each player. Vertical lines are overall player means (i.e. the average YPC for 10,000 YPCs found for the given sample size).")
+      h5("Select two players and a sample size for a head to head competition. The simulator finds who went further with their carries (expressed in yards per carry). To estimate the proportion that each player wins, we simulate the competition 10,000 times. Vertical lines are overall player means (i.e. the average YPC for the given sample size over all 10,000 competition simulations).")
     )
   )
 ))
