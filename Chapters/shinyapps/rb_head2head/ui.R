@@ -1,5 +1,5 @@
 shinyUI(fluidPage(
-  titlePanel("Player Comparison Machine"),
+  titlePanel("Head to Head Competition"),
   
   sidebarLayout(position = "right",
     sidebarPanel( 

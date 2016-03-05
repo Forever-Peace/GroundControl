@@ -49,8 +49,11 @@ shinyServer(function(input, output) {
     suppressMessages(plot_footrace(simdata(), paste(samplenumupdate(), "carries each")))
   })
   output$resultstext <- renderUI({
-    str1 <- paste(input$playertoplot1,"wins:",length(simdata()[which(simdata()[,1]>simdata()[,2]),][[1]])/100,"%")
-    str2 <- paste(input$playertoplot2,"wins:",length(simdata()[which(simdata()[,2]>simdata()[,1]),][[1]])/100,"%")
+    input$recalc
+    isolate(player1text<-input$playertoplot1)
+    isolate(player2text<-input$playertoplot2)
+    str1 <- paste(player1text,"wins:",length(simdata()[which(simdata()[,1]>simdata()[,2]),][[1]])/100,"%")
+    str2 <- paste(player2text,"wins:",length(simdata()[which(simdata()[,2]>simdata()[,1]),][[1]])/100,"%")
     str3 <- paste("Tie:",length(simdata()[which(simdata()[,2]==simdata()[,1]),][[1]])/100,"%")
     str4 <- "---"
     HTML(paste(str1, str2, str3, str4, "Competition outcomes (in YPC):", sep = '<br/>'))
@@ -58,7 +61,8 @@ shinyServer(function(input, output) {
   output$fivenumtable = renderTable({
     fivenum_results<-as.data.frame(list(round(fivenum(simdata()[[1]]),2),round(fivenum(simdata()[[2]]),2)))
     row.names(fivenum_results)<-c("min","Q1","median","Q3","max")
-    colnames(fivenum_results)<-c(input$playertoplot1,input$playertoplot2)
+    input$recalc
+    isolate(colnames(fivenum_results)<-c(input$playertoplot1, input$playertoplot2))
     fivenum_results
   })
 })
