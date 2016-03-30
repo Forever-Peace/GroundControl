@@ -138,7 +138,7 @@ shinyServer(function(input, output) {
                                      "200" = players_knn_wide_200_index)
     paste(playercomp_knn_list(df_rb_rundist_cum,players_knn_wide_index,input$playertoplot,10),",")
   })
-  output$cumcarries <- renderPlot(function() {
+  output$cumcarries <- renderPlot({
     cumcarriesplot <- playercomp_cumden(rb_app,input$playertoplot,input$playermatch)
     print(cumcarriesplot)
   })
