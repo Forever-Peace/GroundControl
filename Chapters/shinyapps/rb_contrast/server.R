@@ -45,7 +45,7 @@ shinyServer(function(input, output) {
     }
     paste("Number of carries (", numcarriestext, "): ", numcarries)
   })
-  output$carrieskde <- renderPlot(function() {
+  output$carrieskde <- renderPlot({
     if(input$compchoice == "Players") {
       carriesplot <- ggplot(rbind(rb_app[rb_app$full_name==input$playertoplot1,],rb_app[rb_app$full_name==input$playertoplot2,]), aes(rushing_yds,fill=full_name))+
         geom_density(aes(fill=full_name),alpha = 0.2,adjust=1.85) + coord_cartesian(xlim=c(-10, 20), ylim=c(0,.16)) + ylab("Probability")+xlab ("Rushing Yards")+
@@ -62,7 +62,7 @@ shinyServer(function(input, output) {
     }
     print(carriesplot)
   })
-  output$cumcarries <- renderPlot(function() {
+  output$cumcarries <- renderPlot({
     if(input$compchoice == "Players") {
     cumcarriesplot <- ggplot(rbind(rb_app[rb_app$full_name==input$playertoplot1,],rb_app[rb_app$full_name==input$playertoplot2,]), aes(rushing_yds,color=full_name))+
       stat_ecdf(aes(color=full_name),alpha = 0.8,size=1.4) + coord_cartesian(xlim=c(-10, 20)) + ylab("Proportion of Run Death")+xlab ("Rushing Yards")+ scale_y_reverse(breaks=c(0,.1,.2,.3,.4,.5,.6,.7,.8,.9,1))+
