@@ -38,7 +38,7 @@ shinyServer(function(input, output) {
     if(input$plotallyears==FALSE) playerdata <- playerdatayears()
     paste(unique(playerdata[playerdata$full_name!=input$playertoplot,]$full_name),",")
   })
-  output$carrieskde <- renderPlot(function() {
+  output$carrieskde <- renderPlot({
     if(input$plotallyears==TRUE) playerdata <- playerdataall()
     if(input$plotallyears==FALSE) playerdata <- playerdatayears()
     playerdata$playergroup <- "Others"
@@ -50,7 +50,7 @@ shinyServer(function(input, output) {
       theme(axis.title=element_text(size="16"))
     print(carriesplot)
   })
-  output$cumcarries <- renderPlot(function() {
+  output$cumcarries <- renderPlot({
     if(input$plotallyears==TRUE) playerdata <- playerdataall()
     if(input$plotallyears==FALSE) playerdata <- playerdatayears()
     playerdata$playergroup <- "Others"
@@ -62,7 +62,7 @@ shinyServer(function(input, output) {
       theme(axis.title=element_text(size="16"))
     print(cumcarriesplot)
   })
-  output$runshare <- renderPlot(function() {
+  output$runshare <- renderPlot({
     if(input$plotallyears==TRUE) playerdata <- playerdataall()
     if(input$plotallyears==FALSE) playerdata <- playerdatayears()
     playerdata$playergroup <- "Others"
