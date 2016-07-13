@@ -20,6 +20,8 @@ downs_density<-ggplot(df_rb[df_rb$down!=4,], aes(rushing_yds, fill = down)) + ge
   theme(axis.title=element_text(size="16"))+theme(axis.title.y = element_text(angle=90))
 downs_density
 
+
+
 samplemean <- function(x, d) {
   return(mean(x[d]))
 }
@@ -39,21 +41,21 @@ describeBy(df_rb$yards_to_go,df_rb$down)
 detach("package:psych", unload=TRUE)
 
 togo_gam<-ggplot(df_rb, aes(yards_to_go, rushing_yds))+coord_cartesian(xlim=c(0,15), ylim=c(2,6))+theme_fivethirtyeight()+
-  stat_smooth(method="gam", formula=y~s(x,k=10), size=2)+ylab ("Yards per Carry")+xlab ("Yards to go")+
-  labs(title="YPC by Yards to Go")+theme(plot.title = element_text(size = rel(2)))+
+  stat_smooth(method="gam", formula=y~s(x,k=10), size=2)+ylab ("Yards per Carry")+xlab ("Yards to go (for first down)")+
+  labs(title="YPC by Yards to Go")+theme(plot.title = element_text(size = rel(2)))+scale_x_reverse()+
   theme(axis.title=element_text(size="16"))+theme(axis.title.y = element_text(angle=90))
 togo_gam
 
 #Yards til goal.
 tilgoal_gam<-ggplot(df_rb, aes(yards_til_goal, rushing_yds))+coord_cartesian(xlim=c(0,100), ylim=c(0,6))+theme_fivethirtyeight()+
   stat_smooth(method="gam", formula=y~s(x,k=20), size=2)+ylab ("Yards per Carry")+xlab ("Yards from Goal")+
-  labs(title="YPC by Yards from Goal")+theme(plot.title = element_text(size = rel(2)))+
+  labs(title="YPC by Yards from Goal")+theme(plot.title = element_text(size = rel(2)))+scale_x_reverse()+
   theme(axis.title=element_text(size="16"))+theme(axis.title.y = element_text(angle=90))
 tilgoal_gam
 
 tilgoal_gam_25<-ggplot(df_rb, aes(yards_til_goal, rushing_yds))+coord_cartesian(xlim=c(0,25), ylim=c(0,6))+theme_fivethirtyeight()+
-  stat_smooth(method="gam", formula=y~s(x,k=25), size=2)+ylab ("Yards per Carry")+xlab ("Yards to go")+
-  labs(title="YPC by Yards from Goal")+theme(plot.title = element_text(size = rel(2)))+
+  stat_smooth(method="gam", formula=y~s(x,k=25), size=2)+ylab ("Yards per Carry")+xlab ("Yards from Goal")+
+  labs(title="YPC by Yards from Goal (red zone)")+theme(plot.title = element_text(size = rel(2)))+scale_x_reverse()+
   theme(axis.title=element_text(size="16"))+theme(axis.title.y = element_text(angle=90))
 tilgoal_gam_25
 
@@ -81,9 +83,9 @@ for (i in seq(1,20)) {
 
 ydstilgoal_plotting <- data.frame(yards_til_goal=seq(1,20), goalcut_effect, ydstilgoal_effect, marginal_defense_perc = (ydstilgoal_effect-goalcut_effect)/goalcut_effect)
 
-ydstilgoal_plot <- ggplot(data = ydstilgoal_plotting)+geom_line(aes(yards_til_goal,goalcut_effect), colour="blue", size=2.5)+stat_smooth(method="loess", aes(yards_til_goal,ydstilgoal_effect), colour="red", size=2.5)+
-  ylab ("Yards per Carry")+xlab ("Yards til goal")+theme_fivethirtyeight()+
-  labs(title="Expected YPC after cutoff adjustment (blue) and Actual YPC (red)")+theme(plot.title = element_text(size = rel(2)))+
+ydstilgoal_plot <- ggplot(data = ydstilgoal_plotting)+geom_line(aes(yards_til_goal,goalcut_effect), colour="blue", size=2.5)+stat_smooth(method="loess", aes(yards_til_goal,ydstilgoal_effect), colour="red", size=2.5, se=FALSE)+
+  ylab ("Yards per Carry")+xlab ("Yards from Goal")+theme_fivethirtyeight()+
+  labs(title="Expected YPC after cutoff adjustment (blue) and Actual YPC (red)")+theme(plot.title = element_text(size = rel(2)))+coord_cartesian(xlim=c(0,20), ylim=c(0,4))+scale_x_reverse()+
   theme(axis.title=element_text(size="16"))+theme(axis.title.y = element_text(angle=90))
 ydstilgoal_plot
 
@@ -109,9 +111,14 @@ downdistgoal_gam<-gam(rushing_yds~s(yards_to_go,k=10,by=down)+s(yards_til_goal, 
 summary(downdistgoal_gam)
 plot(downdistgoal_gam, xlim=c(0,15), ylim = c(-4,4))
 
+plot(downdistgoal_gam, xlim=c(20,0), ylim = c(-4,4), select=5, xlab = "Yards from Goal", ylab = "Marginal Difference from Average YPC", main="Marginal YPC Effect attributable to Field Position ")
+plot(downdistgoal_gam, xlim=c(15,0), ylim = c(-4,4), select=1, xlab = "Yards to Go (for first down)", ylab = "Marginal Difference from Average YPC", main="Marginal YPC Effect attributable to 1st down and distance")
+plot(downdistgoal_gam, xlim=c(15,0), ylim = c(-4,4), select=3, xlab = "Yards to Go (for first down)", ylab = "Marginal Difference from Average YPC", main="Marginal YPC Effect attributable to 3rd down and distance")
+
+
 qplot(yards_til_goal, ..count.., data=df_rb, geom="density", fill=down, position="fill", xlim=c(0,100), adjust=0.30, xlab = "Field Position", ylab = "Proportion of Rushing Attempts", main = "Proportion of Rushing Attempts by Down and Field Position")
 
-#Mixed-effects GAM
+
 library("mgcv")
 a <- gamm(rushing_yds~s(yards_to_go,k=10,by=down)+s(yards_til_goal, k=20), random= list(full_name = ~1), data=df_rb[df_rb$down!=4,])
 anova.gam(a$gam)
