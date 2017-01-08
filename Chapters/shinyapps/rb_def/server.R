@@ -3,7 +3,7 @@ library("ggplot2")
 
 shinyServer(function(input, output) {
   output$yearControls <- renderUI({
-    selectInput("yeartoplot",label=h3("Year"),choices=unique(rb_app$year),selected="2015")
+    selectInput("yeartoplot",label=h3("Year"),choices=unique(rb_app$year),selected="2016")
   })
   output$teamControls <- renderUI({
     selectInput("teamtoplot",label=h3("Team"), choices=levels(unique(rb_app$defense)))

@@ -5,7 +5,7 @@ shinyUI(fluidPage(
     sidebarPanel( 
       h1("Control Panel"), 
       uiOutput("teamControls"),
-      checkboxInput("plotallyears",label=h5("Plot 2010-2015 (combine all years)"),FALSE),
+      checkboxInput("plotallyears",label=h5("Plot 2010-2016 (combine all years)"),FALSE),
       conditionalPanel(
         condition="input.plotallyears==false",
         uiOutput("yearControls")
