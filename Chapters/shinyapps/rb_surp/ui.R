@@ -1,5 +1,5 @@
 shinyUI(fluidPage(
-  titlePanel("Player Run Distributions vs Average"),
+  titlePanel("Player Game Scores"),
   
   sidebarLayout(position = "right",
     sidebarPanel( 
