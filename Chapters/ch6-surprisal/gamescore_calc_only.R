@@ -91,6 +91,10 @@ df_s$gamescore <- df_s$surp - df_s$surp_avg #calculate how much above or below a
 
 summary(df_s$gamescore) #there are you Game Score values!
 
+#Save the values into a csv.
+#Save data. Will automatically put this in your working directory. You can also specify the filepath as part of the filename in the 'file = ' command.
+write.table(df_s[c("full_name", "year", "nameweekyear", "nameweekyear_atts", "homefield", "defense", "Age", "surp", "gamescore", "surp_avg")], file = "rb_GameScore.csv", sep = ",")
+
 
 
 
