@@ -33,7 +33,7 @@ probvsleague_den <- function(player1)
     geom_density(fill='blue',alpha = 0.2, adjust=1.15)+coord_cartesian(xlim=c(-15, 15), ylim=c(0,0.25))+
     geom_rug(data=rb_app[rb_app$full_name==player1,],col="coral3",alpha=0.6)+
     geom_density(data=rb_app[rb_app$full_name==player1,],fill="coral3", alpha=0.2)+
-    ylab ("Relative Probability")+xlab ("Marginal Surprisal in a Game")+
+    ylab ("Relative Probability")+xlab ("Game Score (in bits)")+
     labs(title=paste0("Surprising Games: ",player1))+theme(plot.title = element_text(size = rel(2)))+
     theme(axis.title=element_text(size="16"))+theme(axis.title.y = element_text(angle=90))
 }
